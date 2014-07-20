@@ -26,3 +26,40 @@
 */
  
 defined('ABSPATH') or die("No script kiddies please!");
+if(!class_exists('WP_Plugin_Template')) {
+    class WP_Plugin_Template {
+        public function __construct() {  
+            add_action('admin_init', array(&$this, 'admin_init'));
+            add_action('admin_menu', array(&$this, 'add_menu'));
+
+            public function admin_init() {
+                // Set up the settings for this plugin
+                $this->init_settings();
+                // Possibly do additional admin_init tasks
+            }
+
+            public function init_settings() {
+                register_setting('wp_plugin_template-group', 'setting_a');
+                register_setting('wp_plugin_template-group', 'setting_b');
+            }
+        }
+
+        public static function activate() {
+            //do nothing
+        }
+
+        public static function deactivate() {
+            //do nothing
+        }
+    }
+}
+if(class_exists('WP_Plugin_Template'))
+{
+    // Installation and uninstallation hooks
+    register_activation_hook(__FILE__, array('WP_Plugin_Template', 'activate'));
+    register_deactivation_hook(__FILE__, array('WP_Plugin_Template', 'deactivate'));
+
+    // instantiate the plugin class
+    $wp_plugin_template = new WP_Plugin_Template();
+}
+?>
